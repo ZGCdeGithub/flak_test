@@ -29,7 +29,7 @@ def register():
             )
             if res:
                 db.commit()
-                return redirect('auth.login')
+                return redirect(url_for('auth.login'))
         flash(error)
     return render_template('auth/register.html')
 
@@ -48,8 +48,8 @@ def login():
         elif password is None:
             error = '请输入密码'
         user = db.execute(
-            'select * from user where username=?', (username,)
-        )
+            'select * from user where username = ?', (username,)
+        ).fetchone()
         if user is None:
             error = '用户不存在'
         elif not check_password_hash(user['password'], password):
@@ -77,7 +77,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute('select * from user where id=',(user_id,)).fetchone()
+        g.user = get_db().execute('select * from user where id=?',(user_id,)).fetchone()
 
 
 def login_required(view):
