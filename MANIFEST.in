@@ -1,3 +1,4 @@
-set FLASK_APP=flaskr
-set FLASK_ENV=development
-flask run
+include flaskr/schema.sql
+graft flaskr/static
+graft flaskr/templates
+global-exclude *.pyc
